@@ -20,7 +20,8 @@ fun <N> search(start: N, isGoal: (node: N) -> Boolean, expander: NodeExpander<N>
     fScore.put(start, expander.estimateCost(start))
 
     while (openSet.isNotEmpty()) {
-        val current = openSet.minBy { fScore.getValue(it) }!!
+        val current = openSet.minBy(fScore::getValue)!!
+
         if (isGoal(current)) {
             return reconstructPath(cameFrom, current)
         }
@@ -55,12 +56,12 @@ fun <N> search(start: N, isGoal: (node: N) -> Boolean, expander: NodeExpander<N>
 fun <N> distanceBetween(current: N, neighbour: N): Int = 1
 
 fun <N> reconstructPath(cameFrom: Map<N, N>, start: N): List<N> {
-    val totalPath = mutableListOf<N>(start)
+    val totalPath = mutableListOf(start)
     var current = start
     while (cameFrom.containsKey(current)) {
         current = cameFrom.getValue(current)
         totalPath.add(current)
     }
 
-    return totalPath
+    return totalPath.reversed()
 }
