@@ -110,7 +110,7 @@ class Day3: Solver {
         if(sum > target) {
             return sum.toString()
         }
-        memory.put(next, getSum(next, memory))
+        memory.put(next, sum)
         return traverse(target, next, memory, direction, steps-1)
     }
 
