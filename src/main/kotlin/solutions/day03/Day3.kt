@@ -20,6 +20,10 @@ class Day3: Solver {
     override fun solve(input: List<String>, partTwo: Boolean): String {
 
         val target = input.first().toInt()
+        if(target == 1) {
+            return 0.toString()
+        }
+
         if(partTwo) {
             return doPartTwo(target)
         }

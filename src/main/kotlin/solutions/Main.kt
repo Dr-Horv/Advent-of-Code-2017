@@ -15,8 +15,8 @@ enum class Days {
 
 fun main(args: Array<String>) {
 
-    val partTwo = true
-    val day = Days.Day04
+    val partTwo = false
+    val day = Days.Day03
     val input = getInput(day)
     val solver = when (day) {
         Days.Day01 -> Day1()
@@ -25,7 +25,10 @@ fun main(args: Array<String>) {
         Days.Day04 -> Day4()
     }
 
-   printAnswer(day.name, solver.solve(input, partTwo))
+    printAnswer(day.name, solver.solve(input, partTwo))
+    for (i in 9..9) {
+        printAnswer("$i", solver.solve(listOf(i.toString()), partTwo))
+    }
 }
 
 fun getInput(day: Days): List<String> {
