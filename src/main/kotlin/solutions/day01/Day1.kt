@@ -1,8 +1,6 @@
 package solutions.day01
 
 import solutions.Solver
-import utils.readFile
-import java.nio.file.Paths
 
 class Day1 : Solver {
     override fun solve(input: List<String>, partTwo: Boolean): String {
@@ -31,6 +29,4 @@ class Day1 : Solver {
         val nextIndex = (i + steps) % input.length
         return input[nextIndex]
     }
-
-
 }
