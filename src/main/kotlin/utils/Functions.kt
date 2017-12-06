@@ -1,3 +1,3 @@
 package utils
 
-fun splitAtWhitespace(s: String): List<String> = s.split(Regex("\\s+")).map(String::trim)
+fun String.splitAtWhitespace(): List<String> = this.split(Regex("\\s+")).map(String::trim)

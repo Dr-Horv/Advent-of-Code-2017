@@ -13,7 +13,7 @@ class Day4: Solver {
         }
 
         return input
-                .map(::splitAtWhitespace)
+                .map(String::splitAtWhitespace)
                 .filter(validator)
                 .size
                 .toString()
