@@ -1,9 +1,7 @@
 package utils
 
-import org.hamcrest.CoreMatchers.`is` as isEqual
-import org.hamcrest.CoreMatchers.anyOf
-import org.junit.Assert.*
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 data class Node(val x: Int, val y: Int)
 
@@ -47,10 +45,10 @@ class AStarTest {
 
         assertNotNull(search)
         assertEquals(5, search!!.size)
-        assertThat(search, anyOf(
-                isEqual(listOf(Node(0,0), Node(1,0), Node(2,0), Node(2,1), Node(2,2))),
-                isEqual(listOf(Node(0,0), Node(0,1), Node(0,2), Node(1,2), Node(2,2)))
-        ))
 
+        assertTrue(
+                search == listOf(Node(0,0), Node(1,0), Node(2,0), Node(2,1), Node(2,2)) ||
+                        search == listOf(Node(0,0), Node(0,1), Node(0,2), Node(1,2), Node(2,2))
+        )
     }
 }

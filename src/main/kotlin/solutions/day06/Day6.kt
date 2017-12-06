@@ -11,27 +11,16 @@ class Day6 : Solver {
         val banks = input.first()
                 .splitAtWhitespace()
                 .map(String::toInt)
-                .toTypedArray()
+                .toMutableList()
 
         var steps = 0
         val history = LinkedHashSet<List<Int>>()
-        history.add(banks.copyOf().toList())
+        history.add(banks.toList())
 
         while (true) {
-            val (index, value) = banks.foldIndexed(Tuple(-1, -1), this::findFullestBank)
-
-            val blocks = banks[index]
-            banks[index] = 0
-
-            var currentIndex = index
-            for (b in 1..blocks) {
-                currentIndex = (currentIndex + 1) % banks.size
-                banks[currentIndex]++
-            }
-
+            redistribute(banks)
             steps++
-
-            val copiedBanks = banks.copyOf().toList();
+            val copiedBanks = banks.toList()
             if (history.contains(copiedBanks)) {
                 return if(!partTwo) {
                     steps.toString()
@@ -43,6 +32,17 @@ class Day6 : Solver {
             }
         }
 
+    }
+
+    private fun redistribute(banks: MutableList<Int>) {
+        val (index, blocks) = banks.foldIndexed(Tuple(-1, -1), this::findFullestBank)
+        banks[index] = 0
+
+        var currentIndex = index
+        for (b in 1..blocks) {
+            currentIndex = (currentIndex + 1) % banks.size
+            banks[currentIndex]++
+        }
     }
 
     private fun findFullestBank(index: Int, acc: Tuple, curr: Int): Tuple {

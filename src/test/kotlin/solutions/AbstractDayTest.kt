@@ -1,26 +1,26 @@
 package solutions
 
-import junit.framework.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractDayTest(private val day: Solver) {
+    data class TestData(val input: List<String>, val output: String)
 
-    abstract fun getPart1Data() : Map<List<String>, String>
-    abstract fun getPart2Data() : Map<List<String>, String>
+    abstract fun getPart1Data() : List<TestData>
+    abstract fun getPart2Data() : List<TestData>
 
-    @Test
-    fun testPart1Data() {
-        testData(getPart1Data(), {day.solve(it, false)})
+    @ParameterizedTest
+    @MethodSource("getPart1Data")
+    fun testPart1Data(data: TestData) {
+        assertEquals(data.output, day.solve(data.input, partTwo = false))
     }
 
-    @Test
-    fun testPart2Data() {
-        testData(getPart2Data(), {day.solve(it, true)})
-    }
-
-    private fun testData(data: Map<List<String>, String>, solve: (input: List<String>) -> String) {
-        for(entry in data.entries) {
-            assertEquals(entry.value, solve(entry.key))
-        }
+    @ParameterizedTest
+    @MethodSource("getPart2Data")
+    fun testPart2Data(data: TestData) {
+        assertEquals(data.output, day.solve(data.input, partTwo = true))
     }
 }
