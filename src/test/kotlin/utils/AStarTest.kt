@@ -1,5 +1,7 @@
 package utils
 
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Condition
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -43,12 +45,12 @@ class AStarTest {
         val start = Node(0,0)
         val search = search(start, { it == Node(2, 2) }, MapExpander(start))
 
-        assertNotNull(search)
-        assertEquals(5, search!!.size)
-
-        assertTrue(
-                search == listOf(Node(0,0), Node(1,0), Node(2,0), Node(2,1), Node(2,2)) ||
-                        search == listOf(Node(0,0), Node(0,1), Node(0,2), Node(1,2), Node(2,2))
-        )
+        assertThat(search)
+                .isNotNull()
+                .hasSize(5)
+                .matches {
+                    it == listOf(Node(0,0), Node(1,0), Node(2,0), Node(2,1), Node(2,2)) ||
+                            it == listOf(Node(0,0), Node(1,0), Node(2,0), Node(2,1), Node(2,2))
+                }
     }
 }

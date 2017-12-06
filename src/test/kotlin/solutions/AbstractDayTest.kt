@@ -1,9 +1,9 @@
 package solutions
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.assertj.core.api.Assertions.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractDayTest(private val day: Solver) {
@@ -15,12 +15,12 @@ abstract class AbstractDayTest(private val day: Solver) {
     @ParameterizedTest
     @MethodSource("getPart1Data")
     fun testPart1Data(data: TestData) {
-        assertEquals(data.output, day.solve(data.input, partTwo = false))
+        assertThat(day.solve(data.input, partTwo = false)).isEqualTo(data.output)
     }
 
     @ParameterizedTest
     @MethodSource("getPart2Data")
     fun testPart2Data(data: TestData) {
-        assertEquals(data.output, day.solve(data.input, partTwo = true))
+        assertThat(day.solve(data.input, partTwo = true)).isEqualTo(data.output)
     }
 }

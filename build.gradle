@@ -29,6 +29,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
+    testCompile 'org.assertj:assertj-core:3.8.0'
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.2")
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.0.2'
     testCompile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'
