@@ -16,7 +16,6 @@ class LevelComparator : Comparator<Program> {
 
 class Day7 : Solver {
 
-
     override fun solve(input: List<String>, partTwo: Boolean): String {
         val map: Map<String, Program> = constructTree(input)
         val root = findRoot(map.values.first())
@@ -98,29 +97,20 @@ class Day7 : Solver {
         val middle = weightSorted[weightSorted.size / 2]
 
         return if (first.totalWeight != middle.totalWeight) {
-            findLighter(first, first.totalWeight - middle.totalWeight)
+            find(first, first.totalWeight - middle.totalWeight, { it.totalWeight })
         } else {
-            findHeavier(last, middle.totalWeight - last.totalWeight)
+            find(last, middle.totalWeight - last.totalWeight, { -it.totalWeight })
         }
 
 
     }
 
-    private fun findHeavier(p: Program, diff: Int): Tuple {
-        val weightSorted = p.children.sortedBy { it.totalWeight }
-        return if (weightSorted.first().totalWeight == weightSorted.last().totalWeight) {
+    private fun find(p: Program, diff: Int, sortedBy: (Program) -> Int  ): Tuple {
+        val sorted = p.children.sortedBy(sortedBy)
+        return if (sorted.first().totalWeight == sorted.last().totalWeight) {
             Tuple(p, diff)
         } else {
-            findHeavier(weightSorted.last(), diff)
-        }
-    }
-
-    private fun findLighter(p: Program, diff: Int): Tuple {
-        val weightSorted = p.children.sortedBy { it.totalWeight }
-        return if (weightSorted.first().totalWeight == weightSorted.last().totalWeight) {
-            Tuple(p, diff)
-        } else {
-            findLighter(weightSorted.first(), diff)
+            find(sorted.first(), diff, sortedBy)
         }
     }
 
