@@ -24,12 +24,12 @@ package solutions.{package}
 import solutions.AbstractDayTest
 
 class {clazz}Test: AbstractDayTest({clazz}()) {{
-    override fun getPart1Data(): Map<List<String>, String> = mapOf(
-            Pair(listOf(""), "")
+    override fun getPart1Data(): List<TestData> = listOf(
+           TestData(listOf(""), "")
     )
 
-    override fun getPart2Data(): Map<List<String>, String> = mapOf(
-            Pair(listOf(""), "")
+    override fun getPart2Data(): List<TestData> = listOf(
+           TestData(listOf(""), "")
     )
 
 }}
