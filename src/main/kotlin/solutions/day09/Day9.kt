@@ -10,13 +10,10 @@ data class Node(val parent: Node?, val children: MutableList<Node>) {
 
 class Day9: Solver {
     override fun solve(input: List<String>, partTwo: Boolean): String {
-
         val first = input.first()
-        val stream = first.toCharArray().slice(IntRange(1, first.lastIndex))
+        val stream = first.toCharArray().slice(IntRange(1, first.lastIndex - 1)) // Create outmost node before loop
         val iterator = stream.toCharArray().iterator()
-
-        val root = Node(null, mutableListOf())
-        var curr = root
+        var curr = Node(null, mutableListOf())
         var garbageSum = 0
 
         while(iterator.hasNext()) {
@@ -32,14 +29,18 @@ class Day9: Solver {
         }
 
         return if(!partTwo) {
-            sumGroupScore(root).toString()
+            sumGroupScore(curr).toString()
         } else {
             garbageSum.toString()
         }
     }
 
     private fun goShallower(curr: Node): Node {
-        return curr.parent ?: curr
+        if(curr.parent != null) {
+            return curr.parent
+        } else {
+            throw RuntimeException("Unexpected no parent")
+        }
     }
 
     private fun goDeeper(curr: Node): Node {
