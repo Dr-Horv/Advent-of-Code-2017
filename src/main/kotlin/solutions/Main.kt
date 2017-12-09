@@ -7,6 +7,8 @@ import solutions.day04.Day4
 import solutions.day05.Day5
 import solutions.day06.Day6
 import solutions.day07.Day7
+import solutions.day08.Day8
+import solutions.day09.Day9
 import utils.readFile
 import kotlin.system.measureNanoTime
 
@@ -18,15 +20,18 @@ enum class Days {
     Day05,
     Day06,
     Day07,
+    Day08,
+    Day09
 }
 
 fun Long.toSeconds(): Double = this / (10e9)
+fun Long.toMilliseconds(): Double = this / (10e6)
 
 fun main(args: Array<String>) {
 
     val time = measureNanoTime {
         val partTwo = true
-        val day = Days.Day07
+        val day = Days.Day09
         val input = getInput(day)
         val solver = when (day) {
             Days.Day01 -> Day1()
@@ -36,12 +41,14 @@ fun main(args: Array<String>) {
             Days.Day05 -> Day5()
             Days.Day06 -> Day6()
             Days.Day07 -> Day7()
+            Days.Day08 -> Day8()
+            Days.Day09 -> Day9()
         }
 
         printAnswer(day.name, solver.solve(input, partTwo))
     }
 
-    println("Took ${time.toSeconds()} seconds")
+    println("Took ${time.toMilliseconds()} milliseconds")
 
 
 }
