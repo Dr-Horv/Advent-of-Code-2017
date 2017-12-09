@@ -18,31 +18,16 @@ class Day9: Solver {
         val root = Node(null, mutableListOf())
         var curr = root
         var garbageSum = 0
-        var inGarbage = false
 
         while(iterator.hasNext()) {
             val c = iterator.nextChar()
-            if(inGarbage) {
-                when(c) {
-                    '!' -> iterator.next()
-                    '>' -> inGarbage = false
-                    else -> garbageSum++
-                }
-                continue
+            if(c == '<') {
+                garbageSum += handleGarbage(iterator)
             }
 
             when(c) {
-                '{' -> {
-                    val deeperNode = Node(parent = curr, children = mutableListOf())
-                    curr.addChild(deeperNode)
-                    curr = deeperNode
-                }
-                '}' -> {
-                    if(curr.parent != null) {
-                        curr = curr.parent!!
-                    }
-                }
-                '<' -> inGarbage = true
+                '{' -> curr = goDeeper(curr)
+                '}' -> curr = goShallower(curr)
             }
         }
 
@@ -51,6 +36,29 @@ class Day9: Solver {
         } else {
             garbageSum.toString()
         }
+    }
+
+    private fun goShallower(curr: Node): Node {
+        return curr.parent ?: curr
+    }
+
+    private fun goDeeper(curr: Node): Node {
+        val deeperNode = Node(parent = curr, children = mutableListOf())
+        curr.addChild(deeperNode)
+        return deeperNode
+    }
+
+    private fun handleGarbage(iterator: CharIterator): Int {
+        var garbageSum = 0
+        while(iterator.hasNext()) {
+            val c = iterator.nextChar()
+            when(c) {
+                '!' -> iterator.next()
+                '>' -> return garbageSum
+                else -> garbageSum++
+            }
+        }
+        throw RuntimeException("Unexpected no end of garbage")
     }
 
     private fun sumGroupScore(root: Node, level: Int = 1): Int {
