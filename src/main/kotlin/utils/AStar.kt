@@ -1,5 +1,7 @@
 package utils
 
+import java.util.*
+
 interface NodeExpander<N> {
     fun estimateCost(node: N) : Double
     fun expand(node: N) : Collection<N>
@@ -9,18 +11,23 @@ fun <N> search(start: N, isGoal: (node: N) -> Boolean, expander: NodeExpander<N>
 
     val closedSet: MutableCollection<N> = mutableSetOf()
 
-    // TODO change this to priority queue
-    val openSet: MutableCollection<N> = mutableSetOf(start)
-
     val cameFrom: MutableMap<N, N> = HashMap()
     val gScore: MutableMap<N, Double> = mutableMapOf<N, Double>().withDefault { Double.POSITIVE_INFINITY }
     gScore.put(start, 0.0)
 
     val fScore: MutableMap<N, Double> = mutableMapOf<N, Double>().withDefault { Double.POSITIVE_INFINITY }
     fScore.put(start, expander.estimateCost(start))
+    val openSet: PriorityQueue<N> = PriorityQueue({e1,e2 -> java.lang.Double.compare(fScore.getValue(e1), fScore.getValue(e2))})
+    openSet.add(start)
 
+    var iteration = 0
     while (openSet.isNotEmpty()) {
-        val current = openSet.minBy(fScore::getValue)!!
+        if(iteration % 1000 == 0) {
+            println("$iteration Open: ${openSet.size} Closed: ${closedSet.size}")
+        }
+
+        iteration++
+        val current = openSet.poll()!!
 
         if (isGoal(current)) {
             return reconstructPath(cameFrom, current)
