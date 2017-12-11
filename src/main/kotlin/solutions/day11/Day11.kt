@@ -33,7 +33,7 @@ fun Position.go(dir: Direction) : Position = when(dir){
 }
 
 fun Position.distance(): Int {
-    var xPos = Math.abs(x)
+    val xPos = Math.abs(x)
     val yPos = Math.abs(y)
     return when {
         yPos > xPos -> xPos + yPos/2
