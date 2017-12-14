@@ -1,15 +1,12 @@
 package solutions.day03
 
 import solutions.Solver
+import utils.Coordinate
+import utils.Direction
+import utils.step
 
 data class Cursor(var x: Int, var y:Int)
-data class Coordinate(val x: Int, val y: Int)
-enum class Direction {
-    UP,
-    LEFT,
-    RIGHT,
-    DOWN
-}
+
 
 fun Cursor.manhattanDistance() : Int = Math.abs(x) + Math.abs(y)
 
@@ -89,12 +86,6 @@ class Day3: Solver {
         return traverse(target, start, memory, Direction.RIGHT, 1)
     }
 
-    private fun Coordinate.step(direction: Direction) : Coordinate = when(direction) {
-        Direction.UP -> Coordinate(x, y+1)
-        Direction.LEFT -> Coordinate(x-1, y)
-        Direction.RIGHT -> Coordinate(x+1, y)
-        Direction.DOWN -> Coordinate(x, y-1)
-    }
 
     private fun traverse(target: Int, curr: Coordinate, memory: MutableMap<Coordinate, Int>, direction: Direction, steps: Int): String {
         if(steps == 0) {

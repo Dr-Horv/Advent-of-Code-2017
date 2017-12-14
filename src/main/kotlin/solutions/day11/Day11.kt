@@ -35,10 +35,7 @@ fun Position.go(dir: Direction) : Position = when(dir){
 fun Position.distance(): Int {
     val xPos = Math.abs(x)
     val yPos = Math.abs(y)
-    return when {
-        yPos > xPos -> xPos + yPos/2
-        else -> xPos
-    }
+    return (yPos + xPos)/2
 }
 
 

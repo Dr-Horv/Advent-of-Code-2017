@@ -1,6 +1,7 @@
 package solutions.day10
 
 import solutions.Solver
+import utils.KnotHasher
 
 class Day10: Solver {
     override fun solve(input: List<String>, partTwo: Boolean): String {
@@ -10,9 +11,7 @@ class Day10: Solver {
                     .map(String::trim)
                     .map(String::toInt)
         } else {
-            val inputLengths = input.first().toCharArray().map(Char::toInt).toMutableList()
-            inputLengths.addAll(listOf(17, 31, 73, 47, 23))
-            inputLengths.toList()
+            KnotHasher.lengthsFromString(input.first())
         }
 
         val numbers = if(lengths.size == 4) {
@@ -27,7 +26,7 @@ class Day10: Solver {
             64
         }
 
-        val knotHasher = KnotHasher(list=numbers.toList(), lengths = lengths)
+        val knotHasher = KnotHasher(lengths = lengths, list = numbers.toList())
         for(i in 1..rounds) {
             knotHasher.doRound()
         }
@@ -37,23 +36,10 @@ class Day10: Solver {
         return if(!partTwo) {
             (list[0] * list[1]).toString()
         } else {
-            calculateDenseHash(list)
+            knotHasher.calculateDenseHash()
         }
 
     }
 
-    private fun calculateDenseHash(list: List<Int>): String =
-            list.chunked(16)
-                .map { it.reduce({ acc, curr -> acc xor curr }) }
-                .map(Int::toHexString)
-                .reduce { acc, s -> acc+s }
 }
 
-private fun Int.toHexString(): String {
-    val hexString = java.lang.Integer.toHexString(this)
-    return if(hexString.length == 1) {
-        "0$hexString"
-    } else {
-        hexString
-    }
-}

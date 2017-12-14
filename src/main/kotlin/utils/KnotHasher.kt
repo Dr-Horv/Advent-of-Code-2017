@@ -1,8 +1,26 @@
-package solutions.day10
+package utils
+
+
+private fun Int.toHexString(): String {
+    val hexString = java.lang.Integer.toHexString(this)
+    return if(hexString.length == 1) {
+        "0$hexString"
+    } else {
+        hexString
+    }
+}
 
 class KnotHasher (
-        private var list: List<Int>,
-        private var lengths: List<Int>) {
+        private var lengths: List<Int>,
+        private var list: List<Int> = (0..255).toList()) {
+
+    companion object {
+        fun lengthsFromString(input: String): List<Int> {
+            val inputLengths = input.toCharArray().map(Char::toInt).toMutableList()
+            inputLengths.addAll(listOf(17, 31, 73, 47, 23))
+            return inputLengths.toList()
+        }
+    }
 
     private var currentPosition: Int = 0
     private var skipSize: Int = 0
@@ -16,6 +34,12 @@ class KnotHasher (
             skipSize++
         }
     }
+
+    fun calculateDenseHash(): String =
+            list.chunked(16)
+                    .map { it.reduce({ acc, curr -> acc xor curr }) }
+                    .map(Int::toHexString)
+                    .reduce { acc, s -> acc+s }
 
     private fun reverse(list: List<Int>, index:Int, length: Int): List<Int> {
         val mutableList = list.toMutableList()
