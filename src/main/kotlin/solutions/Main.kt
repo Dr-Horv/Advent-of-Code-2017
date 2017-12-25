@@ -53,14 +53,14 @@ enum class Days {
     Day25
 }
 
-fun Long.toSeconds(): Double = this / (10e9)
-fun Long.toMilliseconds(): Double = this / (10e6)
+fun Long.toSeconds(): Double = this / (10e8)
+fun Long.toMilliseconds(): Double = this / (10e5)
 
 fun main(args: Array<String>) {
 
     val time = measureNanoTime {
         val partTwo = true
-        val day = Days.Day25
+        val day = Days.Day21
         val input = getInput(day)
         val solver = when (day) {
             Days.Day01 -> Day1()
@@ -91,6 +91,7 @@ fun main(args: Array<String>) {
         printAnswer(day.name, solver.solve(input, partTwo))
     }
 
+    println("Took ${time.toSeconds()} seconds")
     println("Took ${time.toMilliseconds()} milliseconds")
 
 
