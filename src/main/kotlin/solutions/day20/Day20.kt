@@ -58,10 +58,10 @@ class Day20: Solver {
             val newSortedByDistance = particles.sortedBy(Particle::manhattanDistance)
 
             if(sortedByDistance.map(Particle::identity) == newSortedByDistance.map(Particle::identity)) {
-                if(!partTwo) {
-                    return sortedByDistance.first().identity.toString()
+                return if(!partTwo) {
+                    sortedByDistance.first().identity.toString()
                 } else {
-                    return particles.size.toString()
+                    particles.size.toString()
                 }
             }
 

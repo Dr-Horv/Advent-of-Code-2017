@@ -2,7 +2,7 @@
 package solutions.day18
 
 import solutions.Solver
-import utils.splitAtWhitespace
+import utils.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.TimeUnit
@@ -113,26 +113,3 @@ class Day18: Solver {
     }
 }
 
-private fun mod(registers: MutableMap<String, Long>, s: String, toInt: String) {
-    registers.put(s, registers.getValue(s) % getValue(registers, toInt))
-}
-
-private fun mul(registers: MutableMap<String, Long>, s: String, toInt: String) {
-    registers.put(s, registers.getValue(s) * getValue(registers, toInt))
-}
-
-private fun add(registers: MutableMap<String, Long>, s: String, toInt: String) {
-    registers.put(s, registers.getValue(s) + getValue(registers, toInt))
-}
-
-private fun set(registers: MutableMap<String, Long>, s: String, toInt: String) {
-    registers.put(s, getValue(registers, toInt))
-}
-
-private fun getValue(registers: MutableMap<String, Long>, s: String): Long {
-    return try {
-        s.toLong()
-    } catch (e: NumberFormatException) {
-        registers.getValue(s)
-    }
-}
