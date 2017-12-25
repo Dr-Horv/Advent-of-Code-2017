@@ -59,8 +59,8 @@ fun Long.toMilliseconds(): Double = this / (10e5)
 fun main(args: Array<String>) {
 
     val time = measureNanoTime {
-        val partTwo = true
-        val day = Days.Day21
+        val partTwo = false
+        val day = Days.Day16
         val input = getInput(day)
         val solver = when (day) {
             Days.Day01 -> Day1()
