@@ -2,93 +2,44 @@ package solutions.day13
 
 import solutions.Solver
 
-enum class Direction {
-    UP,
-    DOWN
-}
 
-data class Scanner(val depth: Int, val range: Int, var position: Int = 0, var direction: Direction = Direction.DOWN) {
-    fun move() {
-        when {
-            position == 0 && direction == Direction.UP -> direction = Direction.DOWN
-            position == (range-1) && direction == Direction.DOWN -> direction = Direction.UP
-        }
+data class Scanner(val depth: Int, val range: Int) {
+    fun positionAt(t: Int) = t % ((range-1) * 2)
+    fun caught(t: Int) = positionAt(t) == 0
+    fun severity() = depth * range
 
-        when(direction) {
-            Direction.UP -> position--
-            Direction.DOWN -> position++
-        }
-
-    }
 }
 
 class Day13 : Solver {
     override fun solve(input: List<String>, partTwo: Boolean): String {
 
-        val initialStateOfScanners = input.map { it.split(":").map(String::trim).map(String::toInt) }
-                .fold(mutableMapOf<Int, Scanner>(), { acc, sd ->
-                    val depth = sd[0]
-                    acc.put(depth, Scanner(depth, sd[1]))
-                    acc
-                }).toMap()
+        val scanners = input.map {
+            val (depth, range) = it.split(":").map(String::trim)
+            Scanner(depth.toInt(), range.toInt())
+        }
 
-
-        val goal = initialStateOfScanners.values.maxBy { it.depth }!!.depth+1
         if(!partTwo) {
-            return doRun2(goal, copyScannerMap(initialStateOfScanners)).first.toString()
+            return doRun(scanners, 0).sum().toString()
         }
 
-        var delay = 0
+        var start = 0
         while (true) {
-            val scanners = copyScannerMap(initialStateOfScanners)
-            scanners.values.forEach {
-                for(i in 0 until delay) {
-                    it.move()
-                }
+            val severities = doRun(scanners, start)
+            if(severities.isEmpty()) {
+                return start.toString()
             }
-
-            val (_, timesCaught) = doRun2(goal, scanners)
-            if(timesCaught == 0) {
-                return delay.toString()
-            }
-            delay++
+            start++
         }
     }
 
-    private fun doRun(goal: Int, scannersMap: Map<Int, Scanner>): Pair<Int, Int> {
-        var position = 0
-        var severity = 0
-        var timesCaught = 0
-        while (position != goal) {
-            val potentialScanner = scannersMap[position]
-            if (potentialScanner != null) {
-                if (potentialScanner.position == 0) {
-                    severity += (potentialScanner.depth * potentialScanner.range)
-                    timesCaught++
-                }
+    private fun doRun(scanners: List<Scanner>, start: Int): MutableList<Int> {
+        val severities = mutableListOf<Int>()
+        scanners.forEach { scanner ->
+            if (scanner.caught(start + scanner.depth)) {
+                severities.add(scanner.severity())
             }
-
-            scannersMap.values.forEach(Scanner::move)
-            position++
         }
-
-        return Pair(severity, timesCaught)
+        return severities
     }
 
-    private fun doRun2(goal: Int, scannersMap: Map<Int, Scanner>): Pair<Int, Int> {
-        return scannersMap.values.map {
-            val caught = it.depth % (it.range*2)  == 0
-            if(caught) {
-                Pair(it.depth * it.range, 1)
-            } else {
-                Pair(0, 0)
-            }
-        }.reduce { acc, pair -> Pair(acc.first+pair.first, acc.second+pair.second) }
-    }
-
-    private fun copyScannerMap(map: Map<Int, Scanner>): Map<Int, Scanner> {
-        val newMap = mutableMapOf<Int, Scanner>()
-        map.entries.forEach { newMap.put(it.key, it.value.copy()) }
-        return newMap.toMap()
-    }
 }
